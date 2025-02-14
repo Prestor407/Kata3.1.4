@@ -10,6 +10,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import ru.kata.spring.boot_security.demo.model.Role;
 import ru.kata.spring.boot_security.demo.model.User;
 import ru.kata.spring.boot_security.demo.repositories.RoleRepo;
 import ru.kata.spring.boot_security.demo.repositories.UserRepo;
@@ -51,6 +52,14 @@ public class UserService implements UserDetailsService {
 
     public void deleteUserById(Long id) {
         userRepo.deleteById(id);
+    }
+
+    public void saveRole(Role role) {
+        roleRepo.save(role);
+    }
+
+    public void saveUser(User user) {
+        userRepo.save(user);
     }
 
     @Transactional(readOnly = true)

@@ -7,22 +7,20 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import ru.kata.spring.boot_security.demo.model.Role;
 import ru.kata.spring.boot_security.demo.model.User;
-import ru.kata.spring.boot_security.demo.repositories.RoleRepo;
-import ru.kata.spring.boot_security.demo.repositories.UserRepo;
+import ru.kata.spring.boot_security.demo.service.UserService;
 
 import javax.annotation.PostConstruct;
 
 @Component
 @Transactional
 public class Init {
-    private final UserRepo userRepo;
-    private final RoleRepo roleRepo;
+
+    private final UserService userService;
     private final PasswordEncoder passwordEncoder;;
 
     @Autowired
-    public Init(UserRepo userRepo, RoleRepo roleRepo, PasswordEncoder passwordEncoder) {
-        this.userRepo = userRepo;
-        this.roleRepo = roleRepo;
+    public Init(UserService userService) {
+        this.userService = userService;
         this.passwordEncoder = new BCryptPasswordEncoder();
     }
 
@@ -30,8 +28,8 @@ public class Init {
     public void init() {
         Role adminRole = new Role("ROLE_ADMIN");
         Role userRole = new Role("ROLE_USER");
-        roleRepo.save(adminRole);
-        roleRepo.save(userRole);
+        userService.saveRole(adminRole);
+        userService.saveRole(userRole);
 
         User admin = new User();
         admin.setUsername("admin");
@@ -48,7 +46,7 @@ public class Init {
         user.setEmail("user@gmail.com");
         user.getRoles().add(userRole);
 
-        userRepo.save(user);
-        userRepo.save(admin);
+        userService.saveUser(user);
+        userService.saveUser(admin);
     }
 }
