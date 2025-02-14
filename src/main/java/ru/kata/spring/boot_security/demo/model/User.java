@@ -2,9 +2,11 @@ package ru.kata.spring.boot_security.demo.model;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.*;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -27,17 +29,16 @@ public class User implements UserDetails {
     @Column
     private byte age;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinTable(joinColumns = @JoinColumn(name = "user_id"),
-    inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private Collection<Role> roles;
+    @ManyToMany(cascade = CascadeType.MERGE)
+    private Set<Role> roles = new HashSet<>();
 
-    public User(Long id, String username, String password, String email, byte age) {
+    public User(Long id, String username, String password, String email, byte age, Set<Role> roles) {
         this.id = id;
         this.username = username;
         this.password = password;
         this.email = email;
         this.age = age;
+        this.roles = roles;
     }
 
     public User() {
@@ -76,11 +77,11 @@ public class User implements UserDetails {
         this.age = age;
     }
 
-    public Collection<Role> getRoles() {
+    public Set<Role> getRoles() {
         return roles;
     }
 
-    public void setRoles(Collection<Role> roles) {
+    public void setRoles(Set<Role> roles) {
         this.roles = roles;
     }
 

@@ -18,7 +18,7 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("/user/info")
+    @GetMapping("/user")
     public String getUserInfo(Model model, Principal principal) {
         User curUser;
         if (principal != null) {

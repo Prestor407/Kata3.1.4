@@ -10,8 +10,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import ru.kata.spring.boot_security.demo.model.Role;
 import ru.kata.spring.boot_security.demo.model.User;
+import ru.kata.spring.boot_security.demo.repositories.RoleRepo;
 import ru.kata.spring.boot_security.demo.repositories.UserRepo;
 
 
@@ -25,19 +25,21 @@ import java.util.List;
 public class UserService implements UserDetailsService {
 
     private final UserRepo userRepo;
+    private final RoleRepo roleRepo;
     private final PasswordEncoder passwordEncoder;
 
 
     @Autowired
-    public UserService(UserRepo userRepo) {
+    public UserService(UserRepo userRepo, RoleRepo roleRepo) {
         this.userRepo = userRepo;
         this.passwordEncoder = new BCryptPasswordEncoder();
+        this.roleRepo = roleRepo;
     }
 
 
     public void addUser(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.setRoles(Collections.singleton(new Role(1L, "ROLE_USER")));
+        user.setRoles(Collections.singleton(roleRepo.findByName("ROLE_USER")));
         userRepo.save(user);
     }
 
@@ -61,7 +63,7 @@ public class UserService implements UserDetailsService {
         return userRepo.findAll();
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepo.findByUsername(username);
@@ -69,8 +71,5 @@ public class UserService implements UserDetailsService {
             throw new UsernameNotFoundException("User not found");
         }
         return user;
-
-//    private Collection<? extends GrantedAuthority> getAuthorities(Collection<Role> roles) {
-//        return roles.stream().map(role -> new SimpleGrantedAuthority(role.getName())).collect(Collectors.toSet());
     }
 }
