@@ -30,7 +30,8 @@ public class RegistrationController {
 
     @PostMapping("/registration")
     public String addUser(@ModelAttribute("user") User user, List<Long> roleIds) {
-        userService.addUser(user, roleIds);
+        userService.setRoles(user, roleIds);
+        userService.addUser(user);
         return "redirect:/login";
     }
 

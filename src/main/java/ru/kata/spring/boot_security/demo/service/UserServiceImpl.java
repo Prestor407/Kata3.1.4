@@ -22,33 +22,21 @@ import java.util.*;
 @Transactional
 public class UserServiceImpl implements UserDetailsService, UserService {
 
+    private final RoleService roleService;
     private final UserRepo userRepo;
     private final PasswordEncoder passwordEncoder;
-    private final RoleServiceImpl roleService;
 
 
     @Autowired
-    public UserServiceImpl(UserRepo userRepo, RoleServiceImpl roleService) {
+    public UserServiceImpl(UserRepo userRepo, RoleService roleService) {
         this.userRepo = userRepo;
         this.passwordEncoder = new BCryptPasswordEncoder();
         this.roleService = roleService;
     }
 
     @Override
-    public void save(User user) {
-        userRepo.save(user);
-    }
-
-
-    @Override
-    public void addUser(User user, List<Long> roleIds) {
+    public void addUser(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        if (roleIds == null || roleIds.isEmpty()) {
-            user.setRoles(Collections.singleton(roleService.findByName("ROLE_USER")));
-        } else {
-            Set<Role> roles = new HashSet<>(roleService.findAllRoleIds(roleIds));
-            user.setRoles(roles);
-        }
         userRepo.save(user);
     }
 
@@ -68,6 +56,13 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     @Override
     public void deleteUserById(Long id) {
         userRepo.deleteById(id);
+    }
+
+
+    @Override
+    public void setRoles(User user, List<Long> roleIds) {
+        Set<Role> roles = new HashSet<>(roleService.findAllRoleIds(roleIds));
+        user.setRoles(roles);
     }
 
     @Override

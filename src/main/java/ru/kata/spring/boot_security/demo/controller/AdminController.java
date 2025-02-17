@@ -7,6 +7,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+
 import ru.kata.spring.boot_security.demo.model.User;
 import ru.kata.spring.boot_security.demo.service.RoleServiceImpl;
 import ru.kata.spring.boot_security.demo.service.UserServiceImpl;
@@ -52,7 +53,8 @@ public class AdminController {
         if (bindingResult.hasErrors()) {
             return "addUser";
         }
-        userService.addUser(user, roleId);
+        userService.setRoles(user, roleId);
+        userService.addUser(user);
         return "redirect:/admin";
     }
 

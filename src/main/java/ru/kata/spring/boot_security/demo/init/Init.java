@@ -1,8 +1,7 @@
 package ru.kata.spring.boot_security.demo.init;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
+
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import ru.kata.spring.boot_security.demo.model.Role;
@@ -11,20 +10,20 @@ import ru.kata.spring.boot_security.demo.service.RoleServiceImpl;
 import ru.kata.spring.boot_security.demo.service.UserServiceImpl;
 
 import javax.annotation.PostConstruct;
+import java.util.Collections;
+
 
 @Component
 @Transactional
 public class Init {
 
     private final UserServiceImpl userService;
-    private final PasswordEncoder passwordEncoder;
     private final RoleServiceImpl roleService;
 
     @Autowired
     public Init(UserServiceImpl userService, RoleServiceImpl roleService) {
         this.userService = userService;
         this.roleService = roleService;
-        this.passwordEncoder = new BCryptPasswordEncoder();
     }
 
     @PostConstruct
@@ -34,22 +33,23 @@ public class Init {
         roleService.save(adminRole);
         roleService.save(userRole);
 
-        User admin = new User();
-        admin.setUsername("admin");
-        admin.setPassword(passwordEncoder.encode("100"));
-        admin.setAge((byte) 10);
-        admin.setEmail("admin@gmail.com");
-        admin.getRoles().add(adminRole);
-        admin.getRoles().add(userRole);
+        User admin = new User(
+                "Admin",
+                "100",
+                "admin@mail.ru",
+                (byte) 10,
+                Collections.singleton(adminRole));
 
-        User user = new User();
-        user.setUsername("user");
-        user.setPassword(passwordEncoder.encode("100"));
-        user.setAge((byte) 10);
-        user.setEmail("user@gmail.com");
-        user.getRoles().add(userRole);
 
-        userService.save(admin);
-        userService.save(user);
+        User user = new User("User",
+                "100",
+                "user@mail.ru",
+                (byte) 10,
+                Collections.singleton(userRole));
+
+
+        userService.addUser(admin);
+        userService.addUser(user);
+
     }
 }

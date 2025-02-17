@@ -32,8 +32,7 @@ public class User implements UserDetails {
     @ManyToMany(cascade = CascadeType.MERGE)
     private Set<Role> roles = new HashSet<>();
 
-    public User(Long id, String username, String password, String email, byte age, Set<Role> roles) {
-        this.id = id;
+    public User(String username, String password, String email, byte age, Set<Role> roles) {
         this.username = username;
         this.password = password;
         this.email = email;
@@ -82,7 +81,7 @@ public class User implements UserDetails {
     }
 
     public void setRoles(Set<Role> roles) {
-        this.roles = roles;
+        this.roles.addAll(new HashSet<>(roles));
     }
 
     @Override
