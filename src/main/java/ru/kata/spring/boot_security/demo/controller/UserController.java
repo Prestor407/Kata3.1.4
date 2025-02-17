@@ -21,11 +21,7 @@ public class UserController {
     @GetMapping("/user")
     public String getUserInfo(Model model, Principal principal) {
         User curUser;
-        if (principal != null) {
             curUser = (User) userService.loadUserByUsername(principal.getName());
-        } else {
-            return "noLogin";
-        }
         model.addAttribute("user", curUser);
         return "userInfo";
     }
