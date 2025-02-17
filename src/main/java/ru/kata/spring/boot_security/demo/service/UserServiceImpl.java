@@ -73,7 +73,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     @Override
     @Transactional(readOnly = true)
     public User getUserById(Long id) {
-        return userRepo.getById(id);
+        return userRepo.findById(id).orElseThrow(() -> new UsernameNotFoundException("User not found"));
     }
 
     @Override
