@@ -7,16 +7,18 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import ru.kata.spring.boot_security.demo.model.User;
-import ru.kata.spring.boot_security.demo.service.UserService;
+import ru.kata.spring.boot_security.demo.service.UserServiceImpl;
+
+import java.util.List;
 
 
 @Controller
 public class RegistrationController {
 
-    private final UserService userService;
+    private final UserServiceImpl userService;
 
     @Autowired
-    public RegistrationController(UserService userService) {
+    public RegistrationController(UserServiceImpl userService) {
         this.userService = userService;
     }
 
@@ -27,8 +29,8 @@ public class RegistrationController {
     }
 
     @PostMapping("/registration")
-    public String addUser(@ModelAttribute("user") User user) {
-        userService.addUser(user);
+    public String addUser(@ModelAttribute("user") User user, List<Long> roleIds) {
+        userService.addUser(user, roleIds);
         return "redirect:/login";
     }
 

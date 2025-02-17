@@ -1,4 +1,4 @@
-package ru.kata.spring.boot_security.demo.Init;
+package ru.kata.spring.boot_security.demo.init;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -7,7 +7,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import ru.kata.spring.boot_security.demo.model.Role;
 import ru.kata.spring.boot_security.demo.model.User;
-import ru.kata.spring.boot_security.demo.service.UserService;
+import ru.kata.spring.boot_security.demo.service.RoleServiceImpl;
+import ru.kata.spring.boot_security.demo.service.UserServiceImpl;
 
 import javax.annotation.PostConstruct;
 
@@ -15,12 +16,14 @@ import javax.annotation.PostConstruct;
 @Transactional
 public class Init {
 
-    private final UserService userService;
-    private final PasswordEncoder passwordEncoder;;
+    private final UserServiceImpl userService;
+    private final PasswordEncoder passwordEncoder;
+    private final RoleServiceImpl roleService;
 
     @Autowired
-    public Init(UserService userService) {
+    public Init(UserServiceImpl userService, RoleServiceImpl roleService) {
         this.userService = userService;
+        this.roleService = roleService;
         this.passwordEncoder = new BCryptPasswordEncoder();
     }
 
@@ -28,8 +31,8 @@ public class Init {
     public void init() {
         Role adminRole = new Role("ROLE_ADMIN");
         Role userRole = new Role("ROLE_USER");
-        userService.saveRole(adminRole);
-        userService.saveRole(userRole);
+        roleService.save(adminRole);
+        roleService.save(userRole);
 
         User admin = new User();
         admin.setUsername("admin");
@@ -46,7 +49,7 @@ public class Init {
         user.setEmail("user@gmail.com");
         user.getRoles().add(userRole);
 
-        userService.saveUser(user);
-        userService.saveUser(admin);
+        userService.save(admin);
+        userService.save(user);
     }
 }
