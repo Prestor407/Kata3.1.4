@@ -15,10 +15,7 @@ import ru.kata.spring.boot_security.demo.model.User;
 import ru.kata.spring.boot_security.demo.repositories.UserRepo;
 
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 
 @Service
@@ -37,6 +34,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
         this.roleService = roleService;
     }
 
+    @Override
     public void save(User user) {
         userRepo.save(user);
     }
@@ -45,24 +43,24 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     @Override
     public void addUser(User user, List<Long> roleIds) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        Set<Role> roles = new HashSet<>();
-        if (roleIds != null) {
-            for (Long roleId : roleIds) {
-                Optional<Role> role = roleService.findById(roleId);
-                if (role.isPresent()) {
-                    roles.add(role.get());
-                } else {
-                    throw new UsernameNotFoundException("Role not found");
-                }
-            }
+        if (roleIds == null || roleIds.isEmpty()) {
+            user.setRoles(Collections.singleton(roleService.findByName("ROLE_USER")));
+        } else {
+            Set<Role> roles = new HashSet<>(roleService.findAllRoleIds(roleIds));
+            user.setRoles(roles);
         }
-        user.setRoles(roles);
         userRepo.save(user);
     }
 
 
     @Override
-    public void updateUser(User user) {
+    public void updateUser(User user, Long userId) {
+        User updatedUser = userRepo.findById(userId).orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        if (!user.getPassword().isEmpty()) {
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+        } else {
+            user.setPassword(updatedUser.getPassword());
+        }
         userRepo.save(user);
     }
 

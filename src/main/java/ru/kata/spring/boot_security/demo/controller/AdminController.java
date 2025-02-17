@@ -14,7 +14,6 @@ import ru.kata.spring.boot_security.demo.service.UserServiceImpl;
 import java.util.List;
 
 
-
 @Controller
 public class AdminController {
 
@@ -48,7 +47,7 @@ public class AdminController {
 
     @PostMapping("/admin/save")
     public String saveUser(@ModelAttribute("user") User user,
-                           BindingResult bindingResult, @RequestParam(value = "roles", required = false)
+                           BindingResult bindingResult, @RequestParam(value = "roleId", required = false)
                            List<Long> roleId) {
         if (bindingResult.hasErrors()) {
             return "addUser";
@@ -64,8 +63,8 @@ public class AdminController {
     }
 
     @PostMapping("/admin/update")
-    public String updateUser(@ModelAttribute("user") User user) {
-        userService.updateUser(user);
+    public String updateUser(@ModelAttribute("user") User user, Long id) {
+        userService.updateUser(user, id);
         return "redirect:/admin";
     }
 
