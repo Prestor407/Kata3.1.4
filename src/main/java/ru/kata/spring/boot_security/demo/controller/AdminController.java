@@ -34,7 +34,7 @@ public class AdminController {
     }
 
     @GetMapping("/admin/single_user")
-    public String showUserById(@RequestParam("id") Long id, Model model) {
+    public String showUserById(Long id, Model model) {
         model.addAttribute("user", userService.getUserById(id));
         return "singleUser";
     }
