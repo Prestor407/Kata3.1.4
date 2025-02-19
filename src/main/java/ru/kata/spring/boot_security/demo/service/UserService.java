@@ -15,6 +15,4 @@ public interface UserService {
 
     List<User> getListOfUsers();
 
-    void setRoles(User user, List<Long> roleIds);
-
 }

@@ -10,7 +10,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import ru.kata.spring.boot_security.demo.model.Role;
+
 import ru.kata.spring.boot_security.demo.model.User;
 import ru.kata.spring.boot_security.demo.repositories.UserRepo;
 
@@ -22,20 +22,20 @@ import java.util.*;
 @Transactional
 public class UserServiceImpl implements UserDetailsService, UserService {
 
-    private final RoleService roleService;
+
     private final UserRepo userRepo;
     private final PasswordEncoder passwordEncoder;
 
 
     @Autowired
-    public UserServiceImpl(UserRepo userRepo, RoleService roleService) {
+    public UserServiceImpl(UserRepo userRepo) {
         this.userRepo = userRepo;
         this.passwordEncoder = new BCryptPasswordEncoder();
-        this.roleService = roleService;
     }
 
     @Override
     public void addUser(User user) {
+
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepo.save(user);
     }
@@ -58,12 +58,6 @@ public class UserServiceImpl implements UserDetailsService, UserService {
         userRepo.deleteById(id);
     }
 
-
-    @Override
-    public void setRoles(User user, List<Long> roleIds) {
-        Set<Role> roles = new HashSet<>(roleService.findAllRoleIds(roleIds));
-        user.setRoles(roles);
-    }
 
     @Override
     @Transactional(readOnly = true)

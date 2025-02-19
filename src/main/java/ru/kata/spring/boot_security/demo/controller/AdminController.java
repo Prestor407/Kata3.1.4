@@ -8,6 +8,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 
+import ru.kata.spring.boot_security.demo.model.Role;
 import ru.kata.spring.boot_security.demo.model.User;
 import ru.kata.spring.boot_security.demo.service.RoleServiceImpl;
 import ru.kata.spring.boot_security.demo.service.UserServiceImpl;
@@ -53,7 +54,9 @@ public class AdminController {
         if (bindingResult.hasErrors()) {
             return "addUser";
         }
-        userService.setRoles(user, roleId);
+
+        List<Role> selectedRoles = roleService.findAllRoleIds(roleId);
+        user.getRoles().addAll(selectedRoles);
         userService.addUser(user);
         return "redirect:/admin";
     }
