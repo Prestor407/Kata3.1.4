@@ -83,7 +83,7 @@
                                 <button class="btn btn-info"
                                         data-bs-toggle="modal"
                                         data-bs-target="#editModal"
-                                        th:attr="data-userId=${u.id},
+                                        th:attr="data-userid=${u.id},
                                data-username=${u.username},
                                data-age=${u.age},
                                data-email=${u.email},
@@ -95,7 +95,7 @@
                                 <button class="btn btn-danger"
                                         data-bs-toggle="modal"
                                         data-bs-target="#deleteModal"
-                                        th:attr="data-userId=${u.id},
+                                        th:attr="data-userid=${u.id},
                                data-username=${u.username},
                                data-age=${u.age},
                                data-email=${u.email},
@@ -119,24 +119,24 @@
                         </div>
                         <div class="col-md-6">
                             <form th:action="@{/admin/save}" th:object="${user}" method="post">
-                                <div class="mb-3 text-center">-->
-                                    <label class="form-label">Username</label>
+                                <div class="mb-3 text-center">
+                                    <label class="form-label fw-bold">Username</label>
                                     <input type="text" th:field="*{username}" class="form-control" required>
                                 </div>
                                 <div class="mb-3 text-center">
-                                    <label class="form-label">Age</label>
+                                    <label class="form-label fw-bold">Age</label>
                                     <input type="number" th:field="*{age}" class="form-control" required>
                                 </div>
                                 <div class="mb-3 text-center">
-                                    <label class="form-label">Email</label>
-                                    <input type="text" th:field="*{email}" class="form-control" required>
+                                    <label class="form-label fw-bold">Email</label>
+                                    <input type="email" th:field="*{email}" class="form-control" required>
                                 </div>
                                 <div class="mb-3 text-center">
-                                    <label class="form-label">Password</label>
+                                    <label class="form-label fw-bold">Password</label>
                                     <input type="password" th:field="*{password}" class="form-control" required>
                                 </div>
                                 <div class="mb-3 text-center">
-                                    <label class="form-label">Role</label>
+                                    <label class="form-label fw-bold">Role</label>
                                     <select multiple name="roleIds" class="form-select" required>
                                         <option th:each="role : ${roles}"
                                                 th:value="${role.id}" th:text="${role.name}"></option>
@@ -151,6 +151,7 @@
                 </div>
             </div>
         </div>
+    </div>
         <!-- Модальное окно "Edit user" -->
         <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
             <div class="modal-dialog">
@@ -165,23 +166,23 @@
                                 <input type="hidden" class="form-control" name="id" id="editId">
                             </div>
                             <div class="mb-3">
-                                <label>Username</label>
+                                <label class="form-label fw-bold">Username</label>
                                 <input type="text" class="form-control" name="username" id="editUsername">
                             </div>
                             <div class="mb-3">
-                                <label>Age</label>
+                                <label class="form-label fw-bold">Age</label>
                                 <input type="number" class="form-control" name="age" id="editAge">
                             </div>
                             <div class="mb-3">
-                                <label>Email</label>
-                                <input type="text" class="form-control" name="email" id="editEmail">
+                                <label class="form-label fw-bold">Email</label>
+                                <input type="email" class="form-control" name="email" id="editEmail">
                             </div>
                             <div class="mb-3">
-                                <label>Password</label>
+                                <label class="form-label fw-bold">Password</label>
                                 <input type="password" class="form-control" name="password" id="editPassword">
                             </div>
                             <div class="mb-3">
-                                <label>Role</label>
+                                <label class="form-label fw-bold">Role</label>
                                 <select multiple name="roleId"
                                         class="form-select" required id="editRole">
                                     <option th:each="role : ${roles}"
@@ -245,7 +246,7 @@
             const editModal = document.getElementById('editModal');
             editModal.addEventListener('show.bs.modal', event => {
                 const button = event.relatedTarget;
-                document.getElementById('editId').value = button.getAttribute('data-userId');
+                document.getElementById('editId').value = button.getAttribute('data-userid');
                 document.getElementById('editUsername').value = button.getAttribute('data-username');
                 document.getElementById('editAge').value = button.getAttribute('data-age');
                 document.getElementById('editEmail').value = button.getAttribute('data-email');
@@ -256,7 +257,7 @@
             const deleteModal = document.getElementById('deleteModal');
             deleteModal.addEventListener('show.bs.modal', event => {
                 const button = event.relatedTarget;
-                document.getElementById('deleteId').value = button.getAttribute('data-userId');
+                document.getElementById('deleteId').value = button.getAttribute('data-userid');
                 document.getElementById('deleteUsername').value = button.getAttribute('data-username');
                 document.getElementById('deleteAge').value = button.getAttribute('data-age');
                 document.getElementById('deleteEmail').value = button.getAttribute('data-email');

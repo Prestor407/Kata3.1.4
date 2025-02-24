@@ -56,12 +56,11 @@ public class AdminController {
     }
 
     @PostMapping("/admin/update")
-    public String updateUser(@RequestParam("id") Long id,
+    public String updateUser(@ModelAttribute("updatedUser") User user,
                              @RequestParam(value = "roleId", required = false) List<Long> roleId) {
-        User user = userService.getUserById(id);
         List<Role> selectedRoles = roleService.findAllRoleIds(roleId);
         user.getRoles().addAll(selectedRoles);
-        userService.updateUser(user, id);
+        userService.updateUser(user, user.getId());
         return "redirect:/admin";
     }
 
@@ -78,16 +77,4 @@ public class AdminController {
         userService.addUser(user);
         return "redirect:/admin";
     }
-//        @GetMapping("/admin/new_user")
-//    public String addUser(Model model) {
-//        model.addAttribute("user", new User());
-//        model.addAttribute("roles", roleService.getRoles());
-//        return "admin_page";
-//    }
-//        @GetMapping("/admin/edit")
-//    public String editUser(Long id, Model model) {
-//        model.addAttribute("user", userService.getUserById(id));
-//        model.addAttribute("roles", roleService.getRoles());
-//        return "admin_page";
-//    }
 }
