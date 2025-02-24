@@ -27,7 +27,7 @@ public class UserController {
     }
 
     @GetMapping("/")
-    public String index(Model model) {
-        return "homepage";
+    public String index() {
+        return "user_page";
     }
 }
