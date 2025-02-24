@@ -30,18 +30,18 @@
         </ul>
     </div>
 </nav>
-<!-- Левая колонка: навигация -->
-<div class="col-md-2">
-    <div class="nav flex-column nav-pills">
-        <!-- Кнопка Admin (активная) -->
-        <a class="nav-link active" href="/admin">Admin</a>
-        <!-- Кнопка User -->
-        <a class="nav-link" href="/user">User</a>
-    </div>
-</div>
 
-
-<div class="container mt-4">
+<div class="container mt-2">
+    <div class="row">
+        <!-- Левая колонка: навигация -->
+        <div class="col-md-2">
+            <div class="nav flex-column nav-pills">
+                <!-- Кнопка Admin (активная) -->
+                <a class="nav-link active" href="/admin">Admin</a>
+                <!-- Кнопка User -->
+                <a class="nav-link" href="/user">User</a>
+            </div>
+        </div>
     <!-- Правая колонка: основной контент -->
     <div class="col-md-10">
         <h1 class="table-header">Admin panel</h1>
@@ -58,54 +58,59 @@
         <div class="tab-content">
             <div class="tab-pane fade show active" id="users-table">
                 <div class="table-header1 border-bottom bg-light">All users</div>
-                <div class="p-4">
-                    <table class="table table-striped border-top">
-                        <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Username</th>
-                            <th>Age</th>
-                            <th>Email</th>
-                            <th>Role</th>
-                            <th>Edit</th>
-                            <th>Delete</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <!-- Перебираем список users -->
-                        <tr th:each="u : ${allUsers}">
-                            <td th:text="${u.id}"></td>
-                            <td th:text="${u.username}"></td>
-                            <td th:text="${u.age}"></td>
-                            <td th:text="${u.email}"></td>
-                            <td th:text="${u.roles}"></td>
-                            <td>
-                                <button class="btn btn-info"
-                                        data-bs-toggle="modal"
-                                        data-bs-target="#editModal"
-                                        th:attr="data-userid=${u.id},
-                               data-username=${u.username},
-                               data-age=${u.age},
-                               data-email=${u.email},
-                               data-role=${u.roles}">
-                                    Edit
-                                </button>
-                            </td>
-                            <td>
-                                <button class="btn btn-danger"
-                                        data-bs-toggle="modal"
-                                        data-bs-target="#deleteModal"
-                                        th:attr="data-userid=${u.id},
-                               data-username=${u.username},
-                               data-age=${u.age},
-                               data-email=${u.email},
-                               data-role=${u.roles}">
-                                    Delete
-                                </button>
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
+                    <div class="p-4">
+                        <div class="container-fluid">
+                            <div class="table-responsive">
+                                <table class="table table-striped border-top w-100">
+                                    <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Username</th>
+                                        <th>Age</th>
+                                        <th>Email</th>
+                                        <th>Role</th>
+                                        <th>Edit</th>
+                                        <th>Delete</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <!-- Перебираем список users -->
+                                    <tr th:each="u : ${allUsers}">
+                                        <td th:text="${u.id}"></td>
+                                        <td th:text="${u.username}"></td>
+                                        <td th:text="${u.age}"></td>
+                                        <td th:text="${u.email}"></td>
+                                        <td th:text="${u.roles}"></td>
+                                        <td>
+                                            <button class="btn btn-info"
+                                                    data-bs-toggle="modal"
+                                                    data-bs-target="#editModal"
+                                                    th:attr="data-userid=${u.id},
+                                           data-username=${u.username},
+                                           data-age=${u.age},
+                                           data-email=${u.email},
+                                           data-role=${u.roles}">
+                                                Edit
+                                            </button>
+                                        </td>
+                                        <td>
+                                            <button class="btn btn-danger"
+                                                    data-bs-toggle="modal"
+                                                    data-bs-target="#deleteModal"
+                                                    th:attr="data-userid=${u.id},
+                                           data-username=${u.username},
+                                           data-age=${u.age},
+                                           data-email=${u.email},
+                                           data-role=${u.roles}">
+                                                Delete
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

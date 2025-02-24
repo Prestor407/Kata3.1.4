@@ -2,6 +2,8 @@ package ru.kata.spring.boot_security.demo.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -13,7 +15,6 @@ import ru.kata.spring.boot_security.demo.model.User;
 import ru.kata.spring.boot_security.demo.service.RoleServiceImpl;
 import ru.kata.spring.boot_security.demo.service.UserServiceImpl;
 
-import java.security.Principal;
 import java.util.List;
 
 
@@ -31,10 +32,10 @@ public class AdminController {
 
 
     @GetMapping("/admin")
-    public String printUsers(Model model, Principal principal) {
+    public String printUsers(Model model, @AuthenticationPrincipal UserDetails userDetails) {
         model.addAttribute("allUsers", userService.getListOfUsers());
         User curUser;
-        curUser = (User) userService.loadUserByUsername(principal.getName());
+        curUser = userService.getUserByUsername(userDetails.getUsername());
         model.addAttribute("curUser", curUser);
         model.addAttribute("user", new User());
         model.addAttribute("roles", roleService.getRoles());

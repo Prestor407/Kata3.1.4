@@ -20,20 +20,9 @@ public class RoleServiceImpl implements RoleService {
         this.roleRepo = roleRepo;
     }
 
-
     @Override
     public List<Role> getRoles() {
         return roleRepo.findAll();
-    }
-
-    @Override
-    public Optional<Role> findById(Long id) {
-        return roleRepo.findById(id);
-    }
-
-    @Override
-    public Role findByName(String name) {
-        return roleRepo.findByName(name);
     }
 
     @Override

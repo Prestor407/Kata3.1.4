@@ -58,6 +58,8 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     }
 
 
+
+
     @Override
     @Transactional(readOnly = true)
     public User getUserById(Long id) {
@@ -68,6 +70,11 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     @Transactional(readOnly = true)
     public List<User> getListOfUsers() {
         return userRepo.findAll();
+    }
+
+    @Override
+    public User getUserByUsername(String username) {
+        return userRepo.findByUsername(username);
     }
 
     @Override
