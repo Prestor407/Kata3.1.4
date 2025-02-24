@@ -25,9 +25,4 @@ public class UserController {
         model.addAttribute("user", curUser);
         return "user_page";
     }
-
-    @GetMapping("/")
-    public String index() {
-        return "user_page";
-    }
 }
