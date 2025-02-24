@@ -21,8 +21,13 @@ public class UserController {
     @GetMapping("/user")
     public String getUserInfo(Model model, Principal principal) {
         User curUser;
-            curUser = (User) userService.loadUserByUsername(principal.getName());
+        curUser = (User) userService.loadUserByUsername(principal.getName());
         model.addAttribute("user", curUser);
-        return "userInfo";
+        return "user_page";
+    }
+
+    @GetMapping("/")
+    public String index(Model model) {
+        return "homepage";
     }
 }

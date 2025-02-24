@@ -43,7 +43,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return authProvider;
     }
 
-
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
@@ -53,11 +52,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/admin/**").hasRole("ADMIN")
                 .anyRequest().authenticated()
                 .and()
-                .formLogin()
+                .formLogin().loginPage("/login").permitAll()
                 .successHandler(successUserHandler)
                 .and()
-                .logout().permitAll()
-                .logoutSuccessUrl("/");
+                .logout()
+                .logoutSuccessUrl("/login?logout").permitAll();
     }
 }
 

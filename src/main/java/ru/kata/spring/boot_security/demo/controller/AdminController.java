@@ -13,6 +13,7 @@ import ru.kata.spring.boot_security.demo.model.User;
 import ru.kata.spring.boot_security.demo.service.RoleServiceImpl;
 import ru.kata.spring.boot_security.demo.service.UserServiceImpl;
 
+import java.security.Principal;
 import java.util.List;
 
 
@@ -28,31 +29,48 @@ public class AdminController {
         this.roleService = roleService;
     }
 
+
     @GetMapping("/admin")
-    public String printUsers(Model model) {
+    public String printUsers(Model model, Principal principal) {
         model.addAttribute("allUsers", userService.getListOfUsers());
-        return "tableOfUsers";
+        User curUser;
+        curUser = (User) userService.loadUserByUsername(principal.getName());
+        model.addAttribute("curUser", curUser);
+        model.addAttribute("user", new User());
+        model.addAttribute("roles", roleService.getRoles());
+        return "admin_page";
     }
+
 
     @GetMapping("/admin/single_user")
     public String showUserById(Long id, Model model) {
         model.addAttribute("user", userService.getUserById(id));
-        return "singleUser";
+        return "user_page";
     }
 
-    @GetMapping("/admin/new_user")
-    public String addUser(Model model) {
-        model.addAttribute("user", new User());
-        model.addAttribute("roles", roleService.getRoles());
-        return "addUser";
+
+    @PostMapping("/admin/delete_user")
+    public String deleteUser(@RequestParam("id") Long id) {
+        userService.deleteUserById(id);
+        return "redirect:/admin";
+    }
+
+    @PostMapping("/admin/update")
+    public String updateUser(@RequestParam("id") Long id,
+                             @RequestParam(value = "roleId", required = false) List<Long> roleId) {
+        User user = userService.getUserById(id);
+        List<Role> selectedRoles = roleService.findAllRoleIds(roleId);
+        user.getRoles().addAll(selectedRoles);
+        userService.updateUser(user, id);
+        return "redirect:/admin";
     }
 
     @PostMapping("/admin/save")
     public String saveUser(@ModelAttribute("user") User user,
-                           BindingResult bindingResult, @RequestParam(value = "roleId", required = false)
+                           BindingResult bindingResult, @RequestParam(value = "roleIds", required = false)
                            List<Long> roleId) {
         if (bindingResult.hasErrors()) {
-            return "addUser";
+            return "admin_page";
         }
 
         List<Role> selectedRoles = roleService.findAllRoleIds(roleId);
@@ -60,22 +78,16 @@ public class AdminController {
         userService.addUser(user);
         return "redirect:/admin";
     }
-
-    @GetMapping("/admin/edit")
-    public String editUser(@RequestParam("id") Long id, Model model) {
-        model.addAttribute("user", userService.getUserById(id));
-        return "updateUser";
-    }
-
-    @PostMapping("/admin/update")
-    public String updateUser(@ModelAttribute("user") User user, Long id) {
-        userService.updateUser(user, id);
-        return "redirect:/admin";
-    }
-
-    @GetMapping("/admin/delete_user")
-    public String deleteUser(@RequestParam("id") Long id) {
-        userService.deleteUserById(id);
-        return "redirect:/admin";
-    }
+//        @GetMapping("/admin/new_user")
+//    public String addUser(Model model) {
+//        model.addAttribute("user", new User());
+//        model.addAttribute("roles", roleService.getRoles());
+//        return "admin_page";
+//    }
+//        @GetMapping("/admin/edit")
+//    public String editUser(Long id, Model model) {
+//        model.addAttribute("user", userService.getUserById(id));
+//        model.addAttribute("roles", roleService.getRoles());
+//        return "admin_page";
+//    }
 }
