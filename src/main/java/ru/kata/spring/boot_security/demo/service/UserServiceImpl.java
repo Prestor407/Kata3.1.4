@@ -41,8 +41,8 @@ public class UserServiceImpl implements UserDetailsService, UserService {
 
 
     @Override
-    public void updateUser(User user, Long userId) {
-        User updatedUser = userRepo.findById(userId).orElseThrow(() -> new UsernameNotFoundException("User not found"));
+    public void updateUser(User user) {
+        User updatedUser = userRepo.findById(user.getId()).orElseThrow(() -> new UsernameNotFoundException("User not found"));
         if (!user.getPassword().isEmpty()) {
             user.setPassword(passwordEncoder.encode(user.getPassword()));
         } else {

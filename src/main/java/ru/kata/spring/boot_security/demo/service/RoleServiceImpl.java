@@ -30,6 +30,11 @@ public class RoleServiceImpl implements RoleService {
         return roleRepo.findAllById(roleIds);
     }
 
+    @Override
+    public Optional<Role> findRoleById(Long roleId) {
+         return roleRepo.findById(roleId);
+    }
+
     @Transactional
     @Override
     public void save(Role role) {

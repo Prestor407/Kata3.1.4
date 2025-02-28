@@ -46,17 +46,25 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                .authorizeRequests()
-                .antMatchers("/registration", "/").permitAll()
-                .antMatchers("/user/**").hasAnyRole("USER", "ADMIN")
-                .antMatchers("/admin/**").hasRole("ADMIN")
-                .anyRequest().authenticated()
-                .and()
-                .formLogin().loginPage("/login").permitAll()
-                .successHandler(successUserHandler)
-                .and()
-                .logout()
-                .logoutSuccessUrl("/login?logout").permitAll();
+                .csrf().disable()
+                .authorizeHttpRequests(auth -> auth
+                        .anyRequest().permitAll() // Разрешаем все запросы без аутентификации
+                )
+                .sessionManagement().disable() // Отключаем управление сессиями
+                .formLogin().disable() // Отключаем форму логина
+                .httpBasic().disable(); // Отключаем Basic-Auth
+
+//                .authorizeRequests()
+//                .antMatchers("/registration", "/").permitAll()
+//                .antMatchers("/user/**").hasAnyRole("USER", "ADMIN")
+//                .antMatchers("/admin/**").hasRole("ADMIN")
+//                .anyRequest().authenticated()
+//                .and()
+//                .formLogin().loginPage("/login").permitAll()
+//                .successHandler(successUserHandler)
+//                .and()
+//                .logout()
+//                .logoutSuccessUrl("/login?logout").permitAll();
     }
 }
 
