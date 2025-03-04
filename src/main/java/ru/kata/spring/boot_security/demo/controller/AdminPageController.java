@@ -25,6 +25,7 @@ public class AdminPageController {
 
     @GetMapping("/admin")
     public String ShowAdminPage(Model model, @AuthenticationPrincipal UserDetails userDetails) {
+        model.addAttribute("allUsers", userService.getListOfUsers());
         model.addAttribute("curUser", userService.getUserByUsername(userDetails.getUsername()));
         model.addAttribute("user", new User());
         model.addAttribute("roles", roleService.getRoles());
