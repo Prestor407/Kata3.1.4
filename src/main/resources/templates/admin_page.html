@@ -3,22 +3,39 @@
       lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width">
     <title>Admin panel</title>
     <link rel="stylesheet"
           href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <style>
+        body {
+            font-size: 1rem;
+        }
+
         .table-header1 {
             color: black;
             padding: 10px;
-            font-size: 24px;
-            margin-left: 0;
+            font-size: 1.5rem;
+        }
+
+        .container {
+            max-width: 100%;
+            padding: 1rem;
+        }
+
+        .nav-link {
+            font-size: 1rem;
+        }
+
+        .table {
+            width: 100%;
         }
     </style>
 </head>
 <body>
 <!-- Верхняя панель -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <div class="container-fluid">
+    <div class="container-fluid d-flex justify-content-between">
         <span class="navbar-brand" id="current-user"></span>
         <ul class="navbar-nav">
             <li class="nav-item">
@@ -50,14 +67,14 @@
                     Table</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" data-bs-toggle="tab" href="#new-user-form" id="new-user-tab">New User</a>
+                <a class="nav-link border" data-bs-toggle="tab" href="#new-user-form" id="new-user-tab">New User</a>
             </li>
         </ul>
 
         <div class="tab-content">
             <div class="tab-pane fade show active" id="users-table">
                 <div class="table-header1 border-bottom bg-light">All users</div>
-                    <div class="p-4">
+                    <div class="p-3">
                         <div class="container-fluid">
                             <div class="table-responsive">
                                 <table class="table table-striped border-top w-100">
@@ -80,48 +97,46 @@
                     </div>
                 </div>
             </div>
-        </div>
 
-        <div id="new-user-form" class="tab-pane fade">
-            <div class="form-container border m-0">
-                <div class="container-fluid mt-4">
-                    <div class="row justify-content-center">
-                        <div class="col-12 mb-4">
-                            <h2 class="table-header1 border-bottom bg-light">Add new user</h2>
-                        </div>
-                        <div class="col-md-6">
-                            <form id="create-user-form">
-                                <div class="mb-3 text-center">
-                                    <label class="form-label fw-bold">Username</label>
-                                    <input type="text" class="form-control" name="username" required>
-                                </div>
-                                <div class="mb-3 text-center">
-                                    <label class="form-label fw-bold">Age</label>
-                                    <input type="number" class="form-control" name="age" required>
-                                </div>
-                                <div class="mb-3 text-center">
-                                    <label class="form-label fw-bold">Email</label>
-                                    <input type="email" class="form-control" name="email" required>
-                                </div>
-                                <div class="mb-3 text-center">
-                                    <label class="form-label fw-bold">Password</label>
-                                    <input type="password" class="form-control" name="password" required>
-                                </div>
-                                <div class="mb-3 text-center">
-                                    <label class="form-label fw-bold">Role</label>
-                                    <select multiple name="roleIds" class="form-select role-select" required
-                                        id="new-user-roles">
-                                    </select>
-                                </div>
-                                <div class="mt-3">
-                                    <button type="submit" class="btn btn-success">Add new user</button>
-                                </div>
-                            </form>
+        <div class="tab-pane fade" id="new-user-form">
+            <div class="table-header1 border-bottom bg-light">Add new user</div>
+            <div class="p-3">
+                <div class="container-fluid">
+                    <div class="table border-top p-4 bg-light rounded">
+                        <div class="row justify-content-center">
+                            <div class="col-sm-8 col-md-5">
+                                <form id="create-user-form">
+                                    <div class="mb-3">
+                                        <label class="form-label fw-bold">Username</label>
+                                        <input type="text" class="form-control" name="username" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label fw-bold">Age</label>
+                                        <input type="number" class="form-control" name="age" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label fw-bold">Email</label>
+                                        <input type="email" class="form-control" name="email" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label fw-bold">Password</label>
+                                        <input type="password" class="form-control" name="password" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label fw-bold">Role</label>
+                                        <select multiple name="roleIds" class="form-select role-select" id="new-user-roles" required></select>
+                                    </div>
+                                    <div class="mt-3">
+                                        <button type="submit" class="btn btn-success w-100">Add new user</button>
+                                    </div>
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
     </div>
         <!-- Модальное окно "Edit user" -->
         <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">

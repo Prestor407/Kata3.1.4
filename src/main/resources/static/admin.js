@@ -154,6 +154,7 @@ async function addUser(userData) {
         method: 'post', body: JSON.stringify(userData), headers: { 'Content-Type': 'application/json' }
     })
     await loadUsers()
+    window.location.href = '/admin'
 }
 
 async function updateUser(userData) {
