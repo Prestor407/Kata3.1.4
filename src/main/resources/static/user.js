@@ -29,7 +29,7 @@ function setupEventListeners() {
     document.getElementById('logout-form').addEventListener('submit', async (e) => {
         e.preventDefault()
         await fetch('/logout', {
-            method: 'post', headers: {'X-XSRF-TOKEN': getCsrfToken()}
+            method: 'post'
         })
         window.location.href = '/login'
     })

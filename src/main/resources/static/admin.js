@@ -140,6 +140,13 @@ function setupEventListeners() {
         const userId = document.getElementById('deleteId').value
         await deleteUser(userId);
     })
+    document.getElementById('logout-form').addEventListener('submit', async (e) => {
+        e.preventDefault()
+        await fetch('/logout', {
+            method: 'post'
+        })
+        window.location.href = '/login'
+    })
 }
 
 async function addUser(userData) {
@@ -175,7 +182,11 @@ function getFormData(formId) {
         age: form.elements.age.value,
         email: form.elements.email.value,
         password: form.elements.password.value,
-        roles: Array.from(form.elements.roleIds.selectedOptions).map(option => ({id: parseInt(option.value)}))
+        roles: Array.from(form.elements.roleIds.selectedOptions).map(option => ({
+            id: parseInt(option.value),
+            name: option.text,
+        }))
+
     };
 }
 
